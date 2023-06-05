@@ -1,60 +1,52 @@
-import "@fontsource/inter";
-import "./App.css";
+import '@fontsource/inter'
+import './App.css'
 
-import {
-  Box,
-  ChakraProvider,
-  Flex,
-  Spacer,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import Conversation from "./components/Conversation";
+import { ChakraProvider, Text, VStack } from '@chakra-ui/react'
+import Conversation from './components/Conversation'
 
-import { isChrome, isMobile, isSafari } from "react-device-detect";
-import { WarningIcon } from "@chakra-ui/icons";
+import { WarningIcon } from '@chakra-ui/icons'
+import { isChrome, isMobile, isSafari } from 'react-device-detect'
 import {
-  DeepgramTranscriberConfig,
-  LLMAgentConfig,
   AzureSynthesizerConfig,
-  VocodeConfig,
-  EchoAgentConfig,
   ChatGPTAgentConfig,
-  RESTfulUserImplementedAgentConfig,
-  WebSocketUserImplementedAgentConfig,
-} from "vocode";
+  DeepgramTranscriberConfig,
+  VocodeConfig,
+} from 'vocode'
 
 const App = () => {
   const transcriberConfig: Omit<
     DeepgramTranscriberConfig,
-    "samplingRate" | "audioEncoding"
+    'samplingRate' | 'audioEncoding'
   > = {
-    type: "transcriber_deepgram",
+    type: 'transcriber_deepgram',
     chunkSize: 2048,
     endpointingConfig: {
-      type: "endpointing_punctuation_based",
+      type: 'endpointing_punctuation_based',
     },
-  };
+  }
   const agentConfig: ChatGPTAgentConfig = {
-    type: "agent_chat_gpt",
-    initialMessage: { type: "message_base", text: "Hello!" },
+    type: 'agent_chat_gpt',
+    initialMessage: { type: 'message_base', text: 'Hello?' },
+    temperature: 0.7,
+    // promptPreamble:
+    // 'You just saw that I left a request for a quote on your website. You are more than happy to help. Please ask me a few questions, then connect them with someone on your team. To start, please let me know your first and last name, along with the address where you need the service? Plus, ask me about exactly what I need help with on my HVAC system. Ask me to get the best call-back phone number in case we get disconnected. Ask me when the best time to schedule someone to take a look. Make sure to collect this information before you connect me with someone on your team.',
     promptPreamble:
-      "Vocode is an SDK that allows developers to create voice bots like this one in less than 10 lines of code. The AI is explaining to the human what Vocode is.",
+      'You are a front desk worker named Bob from DeskMakers, and you are an expert on Purchase Orders. Your job is to call Vendors, and update statuses on new and existing POs (aka Purchase Orders) that were sent by DeskMarkers. Right now you need to get information on PO 23-05312. This PO had an expected delivery date of May 23, but DeskMarkers did not receive all of the items in PO. DeskMakers is missing 3 laminated drawsers (part number 42-322) and 9 steel hinges (part number 23-A-2). You must ask questions to the Vendor to find out the new ETA for the missing items.',
     endConversationOnGoodbye: true,
     generateResponses: true,
     cutOffResponse: {},
-  };
+  }
   const synthesizerConfig: Omit<
     AzureSynthesizerConfig,
-    "samplingRate" | "audioEncoding"
+    'samplingRate' | 'audioEncoding'
   > = {
-    type: "synthesizer_azure",
+    type: 'synthesizer_azure',
     shouldEncodeAsWav: true,
-    voiceName: "en-US-SteffanNeural",
-  };
+    voiceName: 'en-US-SteffanNeural',
+  }
   const vocodeConfig: VocodeConfig = {
-    apiKey: process.env.REACT_APP_VOCODE_API_KEY || "",
-  };
+    apiKey: process.env.REACT_APP_VOCODE_API_KEY || '',
+  }
 
   return (
     <ChakraProvider>
@@ -77,7 +69,7 @@ const App = () => {
         />
       )}
     </ChakraProvider>
-  );
-};
+  )
+}
 
-export default App;
+export default App
